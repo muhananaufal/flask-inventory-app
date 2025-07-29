@@ -86,45 +86,45 @@ jobs:
             -Dsonar.sources=.
             -Dsonar.python.coverage.reportPaths=coverage.xml
 
-  notify-slack:
-    needs: [build-and-test, sonarqube-scan]
-    if: always() # Selalu jalankan job ini, baik sukses maupun gagal
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify on Success
-        if: needs.build-and-test.result == 'success' && needs.sonarqube-scan.result == 'success'
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "✅ *Build & Scan Berhasil* | `flask-inventory-app`\n*Commit*: `${{ github.event.head_commit.message }}`\n*Aktor*: `${{ github.actor }}`\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Lihat Detail>"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  # notify-slack:
+  #   needs: [build-and-test, sonarqube-scan]
+  #   if: always() # Selalu jalankan job ini, baik sukses maupun gagal
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Notify on Success
+  #       if: needs.build-and-test.result == 'success' && needs.sonarqube-scan.result == 'success'
+  #       uses: slackapi/slack-github-action@v1.24.0
+  #       with:
+  #         payload: |
+  #           {
+  #             "blocks": [
+  #               {
+  #                 "type": "section",
+  #                 "text": {
+  #                   "type": "mrkdwn",
+  #                   "text": "✅ *Build & Scan Berhasil* | `flask-inventory-app`\n*Commit*: `${{ github.event.head_commit.message }}`\n*Aktor*: `${{ github.actor }}`\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Lihat Detail>"
+  #                 }
+  #               }
+  #             ]
+  #           }
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Notify on Failure
-        if: failure()
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "❌ *Build atau Scan Gagal* | `flask-inventory-app`\n*Commit*: `${{ github.event.head_commit.message }}`\n*Aktor*: `${{ github.actor }}`\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Lihat Detail>"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  #     - name: Notify on Failure
+  #       if: failure()
+  #       uses: slackapi/slack-github-action@v1.24.0
+  #       with:
+  #         payload: |
+  #           {
+  #             "blocks": [
+  #               {
+  #                 "type": "section",
+  #                 "text": {
+  #                   "type": "mrkdwn",
+  #                   "text": "❌ *Build atau Scan Gagal* | `flask-inventory-app`\n*Commit*: `${{ github.event.head_commit.message }}`\n*Aktor*: `${{ github.actor }}`\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Lihat Detail>"
+  #                 }
+  #               }
+  #             ]
+  #           }
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
